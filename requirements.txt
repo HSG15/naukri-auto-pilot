@@ -1,0 +1,8 @@
+requests
+urllib3
+httpcloak
+python-dotenv
+selenium
+pycryptodome 
+colorama
+schedule
