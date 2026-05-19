@@ -17,6 +17,7 @@ import schedule
 import requests
 from io import BytesIO
 from datetime import datetime
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # ── project imports ─────────────────────────────────────────────
@@ -44,7 +45,7 @@ NAUKRI_PASSWORD   = os.getenv("NAUKRI_PASSWORD", "")
 GDRIVE_FILE_ID    = os.getenv("GDRIVE_FILE_ID", "")   # from share link
 RESUME_BASE_NAME  = os.getenv("RESUME_BASE_NAME", "resume")   # e.g. "harishankar_resume"
 HEADLINE          = os.getenv("NAUKRI_HEADLINE", "")          # optional profile headline update
-UPLOAD_TIMES      = ["09:00", "14:00"]                        # 9 AM and 2 PM
+UPLOAD_TIMES      = ["09:15", "14:00"]                        # 9:15 AM and 2 PM
 
 
 # ── helpers ──────────────────────────────────────────────────────
