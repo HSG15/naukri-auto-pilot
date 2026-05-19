@@ -141,6 +141,7 @@ class NaukriLoginClient:
         for attempt in range(max_retries):
             try:
                 with MailBox('imap.gmail.com').login(self.username, app_password) as mailbox:
+                    mailbox.folder.set('[Gmail]/All Mail')
                     for msg in mailbox.fetch(limit=15, reverse=True):
                         sender = msg.from_.lower()
                         if 'naukri' in sender or 'infoedge' in sender:
