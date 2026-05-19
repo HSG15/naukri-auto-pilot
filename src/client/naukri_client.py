@@ -189,17 +189,26 @@ class NaukriLoginClient:
                 app_password = os.getenv("GMAIL_APP_PASSWORD")
                 if not app_password:
                     raise NaukriAuthError("Login failed: MFA required, but GMAIL_APP_PASSWORD is not set in environment.")
-                
+
                 logger.info("Waiting 10 seconds for email to arrive...")
                 time.sleep(10)
-                
+
                 otp = self._fetch_otp_from_gmail(app_password)
                 if not otp:
                     raise NaukriAuthError("Login failed: Could not retrieve OTP from Gmail within the timeout.")
-                
+
                 logger.info("Successfully retrieved OTP: %s", otp)
                 is_mobile = err_data.get("data", {}).get("medium") == "sms"
                 return self.verify_otp(otp, is_mobile=is_mobile)
+
+            # Check for OTP quota exhaustion — too many OTPs sent today
+            validation_errors = err_data.get("validationErrors", [])
+            for ve in validation_errors:
+                if ve.get("customErrorCode") == 403009:
+                    raise NaukriAuthError(
+                        "Daily OTP quota limit reached. Naukri has blocked further OTP emails today. "
+                        "This will reset tomorrow. No action needed — next scheduled run will succeed."
+                    )
 
             print(res.content)
             raise NaukriAuthError("Login failed")
